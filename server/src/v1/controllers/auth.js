@@ -51,23 +51,7 @@ const AuthController = {
    */
   async logout(req, res) {
     try {
-        return res.status(200).json({
-            user: {
-              id: user._id,
-              uid: user.uid,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              fullName: user.firstName + " " + user.lastName,
-              userName: user.userName,
-              email: user.email,
-              gender: user.gender,
-              avatar: user.avatar
-            },
-            accessToken,
-            refreshToken,
-          });
-      }
-      return res.status(404).json({ message: "User not exist" });
+        // 
     } catch (error) {}
   },
 };
