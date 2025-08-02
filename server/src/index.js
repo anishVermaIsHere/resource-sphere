@@ -1,0 +1,11 @@
+import { createServer } from "node:http";
+import app from "./app.js";
+import AppConfig from "./config/app.config.js";
+
+const server = createServer(app);
+
+server.listen(AppConfig.port, AppConfig.host, () => {
+  console.log(
+    `***** Resource Sphere SERVER started at ${AppConfig.host}:${AppConfig.port} *****`
+  );
+});
