@@ -38,8 +38,7 @@ export function FormModal({ children }) {
 
   const onSubmit = async (data) => {
     const { spreadSheetId } = getGoogleSheet(data.sheetLink);
-    console.log(data);
-    // await resourceCreate(spreadSheetId);
+    await resourceCreate(spreadSheetId);
   };
 
   const handleUpload = (e) => {
@@ -90,7 +89,7 @@ export function FormModal({ children }) {
               >
                 <Icons.upload className="size-14" />
                 <p className="text-gray-500 text-sm">
-                  Drap and Drop the .xlsx file
+                  Drag and Drop the .xlsx file
                 </p>
                 <Input
                   type="file"
