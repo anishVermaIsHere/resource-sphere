@@ -1,4 +1,5 @@
-import Login from "../components/login";
+import Login from "../components/login/login";
+
 
 export default async function HomePage() {
   return (

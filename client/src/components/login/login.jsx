@@ -1,7 +1,8 @@
 "use client";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
-import { Button } from "./ui/button";
+import { OAuthGoogle } from "./oauth";
+import { Button } from "../ui/button";
 import {
   Form,
   FormDescription,
@@ -10,22 +11,20 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Input } from "./ui/input";
-import Section from "./common/layout/section";
+} from "../ui/form";
+import { Input } from "../ui/input";
+import Section from "../common/layout/section";
 import toast, { Toaster } from "react-hot-toast";
-import AppConfig from "../config/app.config";
-import { login } from "../services/api/auth";
+import AppConfig from "../../config/app.config";
+import { login } from "../../services/api/auth";
 import { useRouter } from "next/navigation";
-import CommonAvatar from "./ui/common-avatar";
-import { loginSchema } from "../shared/schema/login";
-import userStore from "../store/user.store";
-import authStore from "../store/auth.store";
-import { Dots } from "./ui/loading-animation";
+import CommonAvatar from "../ui/common-avatar";
+import { loginSchema } from "../../shared/schema/login";
+import authStore from "../../store/auth.store";
+import { Dots } from "../ui/loading-animation";
 
 export default function Login() {
-  const { user, setUser } = userStore.getState();
-  const { setAuth } = authStore.getState();
+  const { user, setAuth, setUser } = authStore.getState();
   const router = useRouter();
   const form = useForm({
     resolver: joiResolver(loginSchema),
@@ -37,29 +36,26 @@ export default function Login() {
 
   async function onSubmit(data) {
     try {
-      // setLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 2000));
       const res = await login(data);
-      setUser(res.data.user);
       if (res?.status === 200) {
         setAuth({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken });
-        // toast.success("Logged in successfully");
-        // setTimeout(()=>router.push(`/u/${userId}/dashboard`),1000);
+        setUser(res.data.user);
       }
     } catch (error) {
       console.error("Error while login", error);
       toast.error(error.response.data.message);
     } finally {
-      // setTimeout(() => setLoading(false), 2000);
+
     }
   }
 
   if (form.formState.isSubmitSuccessful) {
-    setTimeout(()=>router.push(`/u/${user.id}/dashboard`),3000);
-    return <Section className="flex flex-col justify-center items-center min-h-screen">
+    setTimeout(() => router.push(`/u/${user.id}/dashboard`), 3000);
+    return (<Section className="flex flex-col justify-center items-center min-h-screen">
       <p className="text-gray-500 font-medium text-lg">Redirecting...</p>
       <Dots />
-    </Section>
+    </Section>)
   }
 
   return (
@@ -80,7 +76,7 @@ export default function Login() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>Email or Username</FormLabel>
                   <FormControl>
                     <Input placeholder="batman" {...field} />
                   </FormControl>
@@ -109,12 +105,13 @@ export default function Login() {
               {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
             </Button>
           </form>
+          <OAuthGoogle />
         </div>
       </Form>
       <div className="flex items-center justify-center px-2 py-6">
         &#169; Copyright {new Date().getFullYear()} {AppConfig.appName}
       </div>
-    <Toaster />
+      <Toaster />
     </Section>
   );
 }

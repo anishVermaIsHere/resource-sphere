@@ -17,12 +17,12 @@ import {
 } from "./ui/sidebar";
 import CommonAvatar from "./ui/common-avatar";
 import AppConfig from "../config/app.config";
-import userStore from "../store/user.store";
+import authStore from "../store/auth.store";
 import { usePathname } from "next/navigation";
 import { fetchUser } from "../services/api/user";
 import ProfileDropdown from "../components/common/layout/profile-dropdown";
 
-const { user, setUser } = userStore.getState();
+const { user, setUser } = authStore.getState();
 
 // This is sample data.
 const data = {
@@ -34,11 +34,11 @@ const data = {
       items: [
         {
           title: "Dashboard",
-          url: "/",
+          url: `/u/${user?.id}/dashboard`,
         },
         {
           title: "Resource List",
-          url: "/",
+          url: `/u/${user?.id}/resources`,
         },
         {
           title: "Notes",

@@ -26,7 +26,7 @@ app.use('/api/v1', routerV1);
 // createFakeUser();
 
 
-app.get('/',(_, res)=>res.json({ message: "AI Resource Sphere: Server started" }));
+app.get('/',(_, res)=>res.send("<h3>Resource Sphere: Server started ✅</h3>"));
 
 dbConnection();
 

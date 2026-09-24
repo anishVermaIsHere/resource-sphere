@@ -1,10 +1,11 @@
 import AppConfig from "../config/app.config";
 import axios from "axios";
 import authStore from "../store/auth.store";
+import { getAuthStorage } from "../shared/utils"
 
 
 const axiosInstance = axios.create({
-    baseURL: AppConfig.baseUrl,
+    baseURL: `${AppConfig.baseUrl}/api/v1`,
     headers: {
         'Content-Type': 'application/json'
     }
@@ -13,7 +14,7 @@ const axiosInstance = axios.create({
 const { setAuth, clearAuth } = authStore.getState();
 
 async function refreshAccessToken() {
-  const { refreshToken } = getAuthStorage("_auth");
+  const { refreshToken } = getAuthStorage();
   if (refreshToken) {
     const resp = await axios.post(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/token/refresh/`,
@@ -38,7 +39,7 @@ axiosInstance.interceptors.request.use(
   (request) => {
     let accessToken = authStore.getState().accessToken;
     if (!accessToken && typeof window !== "undefined") {
-      accessToken = getAuthStorage("_auth")?.accessToken;
+      accessToken = getAuthStorage()?.accessToken;
     }
     if (accessToken) {
       request.headers["Authorization"] = `Bearer ${accessToken}`;

@@ -4,7 +4,7 @@ import tokenObject from "../../utils/token.js";
 
 const AuthController = {
   /**
-   * @route POST /auth
+   * @route POST /auth/login
    * @desc Login user
    * @access Public
    */
@@ -45,13 +45,18 @@ const AuthController = {
     } catch (error) {}
   },
     /**
-   * @route POST /auth
+   * @route POST /auth/logout
    * @desc Logout user
    * @access Private
    */
   async logout(req, res) {
     try {
-        // 
+        const authHeader = req.headers['authorization'];
+        if(authHeader && authHeader.startsWith("Bearer")){
+          const authToken = authHeader.split(' ')[1];
+          return res.json({ success: true });
+        }
+        return res.status(401).json({ error: 'Unauthorized: No token provided' });
     } catch (error) {}
   },
 };

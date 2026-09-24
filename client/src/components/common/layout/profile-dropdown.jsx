@@ -1,5 +1,6 @@
 "use client";
 import { redirect } from "next/navigation";
+import Icons from "../../ui/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import {
@@ -13,31 +14,36 @@ import {
   DropdownMenuTrigger,
 } from "../../ui/dropdown-menu";
 import Link from "next/link";
+import authStore from "../../../store/auth.store";
 import { SidebarMenu, SidebarMenuItem } from "../../ui/sidebar";
+import { logout } from "../../../services/api/auth";
 
 export default function ProfileDropdown() {
+  const { user, clearAuth } = authStore.getState();
   const handleLogout = async () => {
-    // const res = await onLogout();
-    // if (res.status === "success") {
-    //   clearAuth();
-    //   setTimeout(() => {
-    //     redirect("/");
-    //   }, 1000);
-    // }
+    const res = await logout();
+    if (res.status === 200) {
+      clearAuth();
+      setTimeout(() => {
+        redirect("/");
+      }, 1000);
+    }
   };
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
-                <AvatarImage
+          <DropdownMenuTrigger className="w-full">
+            <Button variant="ghost" className="relative justify-start bg-gray-200 w-full rounded-sm">
+              <Avatar className="size-6">
+                {/* <AvatarImage
                   src="https://img.freepik.com/premium-vector/profile-picture-placeholder-avatar-silhouette-gray-tones-icon-colored-shapes-gradient_1076610-40164.jpg?semt=ais_hybrid&w=740"
                   alt="avatar"
-                />
-                <AvatarFallback>A</AvatarFallback>
+                /> */}
+                <div className="flex items-center"><Icons.user className="size-6"/>{user.firstName}</div>
+                <AvatarFallback>{user.firstName.slice(0,1)}</AvatarFallback>
               </Avatar>
+              <span className="flex items-center">{user.firstName}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56" align="end" forceMount>

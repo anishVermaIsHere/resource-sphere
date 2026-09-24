@@ -1,16 +1,18 @@
-import AppConfig from "../../config/app.config";
-import axios from "axios";
+import axiosInstance from "../interceptor"
+import { API_ENDPOINTS } from "./endpoints"
+
+const { AUTH } = API_ENDPOINTS;
 
 async function login(credentials){
-    return await axios.post(`${AppConfig.baseUrl}/api/v1/auth`, credentials);
+    return await axiosInstance.post(AUTH.login(), credentials);
 };
 
 async function logout(){
-    
+    return await axiosInstance.post(AUTH.logout());
 };
 
 async function refresh(){
-    return 
+    return await axiosInstance.post(AUTH.refresh());
 };
 
 

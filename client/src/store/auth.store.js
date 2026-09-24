@@ -6,6 +6,8 @@ const authStore = create(
     (set) => ({
       accessToken: "",
       refreshToken: "",
+      user: null,
+      setUser: (user) => set(() => ({ user })),
       setAuth: (auth) =>
         set(() => ({
           accessToken: auth.accessToken,
@@ -21,7 +23,7 @@ const authStore = create(
           ...state,
           refreshToken,
         })),
-      clearAuth: () => set(() => ({ accessToken: "", refreshToken: "" })),
+      clearAuth: () => set(() => ({ accessToken: "", refreshToken: "", user: null })),
     //   hasHydrated: false,
     //   setHasHydrated: (value) => set({ hasHydrated: value }),
     }),
