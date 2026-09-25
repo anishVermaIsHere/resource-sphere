@@ -1,16 +1,9 @@
-import AppConfig from "../../config/app.config";
 import axiosInstance from "../interceptor";
+import { API_ENDPOINTS } from "./endpoints";
 
-async function fetchUser(userId){
-    return await axiosInstance.get(`${AppConfig.baseUrl}/api/v1/users/${userId}`);
-};
+const { AUTH } = API_ENDPOINTS;
 
-async function searchUser(userName){
-    return await axiosInstance.get(`${AppConfig.baseUrl}/api/v1/users/search?u=${userName}`);
-};
-
-
-export {
-    fetchUser,
-    searchUser
+export async function self(){
+    return await axiosInstance.post(AUTH.me('self'));
 }
+

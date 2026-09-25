@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+import cookieParser from 'cookie-parser'
 dotenv.config();
 import cors from "cors";
 import AppConfig from "./config/app.config.js";
@@ -11,6 +12,7 @@ import createFakeUser from "./utils/fake-user.js";
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false, limit: "1mb" }));
 app.use(
   cors({

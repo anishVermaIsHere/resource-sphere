@@ -1,5 +1,5 @@
 "use client";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Icons from "../../ui/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { Button } from "../../ui/button";
@@ -20,12 +20,14 @@ import { logout } from "../../../services/api/auth";
 
 export default function ProfileDropdown() {
   const { user, clearAuth } = authStore.getState();
+  const router = useRouter();
+
   const handleLogout = async () => {
     const res = await logout();
     if (res.status === 200) {
       clearAuth();
       setTimeout(() => {
-        redirect("/");
+        router.push("/");
       }, 1000);
     }
   };

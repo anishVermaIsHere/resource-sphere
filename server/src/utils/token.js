@@ -9,16 +9,15 @@ const TOKEN = Object.freeze({
 
 const decodedUser=(req)=>req["decode"];
 
-const tokenObject = {
-  tokenEncode(payload) {
+const jwtToken = {
+  encode(payload) {
     const { id } = payload;
     const accessToken= jwt.sign(payload, AppConfig.accessTokenKey, { algorithm: "HS256", expiresIn: AppConfig.accessTokenExpiry });
     const refreshToken=jwt.sign(payload, AppConfig.refreshTokenKey, { algorithm: "HS256", expiresIn: AppConfig.refreshTokenExpiry });
     return { accessToken, refreshToken}
-
   },
  
-  tokenDecode(token, tokenType, req) {
+  decode(token, tokenType, req) {
     try {
       let decode={};
       if(tokenType===TOKEN['ACCESS_TOKEN']){
@@ -44,4 +43,4 @@ export {
   TOKEN,
   decodedUser
 };
-export default tokenObject;
+export default jwtToken;

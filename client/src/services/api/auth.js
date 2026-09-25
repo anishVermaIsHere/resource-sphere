@@ -3,22 +3,15 @@ import { API_ENDPOINTS } from "./endpoints"
 
 const { AUTH } = API_ENDPOINTS;
 
-async function login(credentials){
-    return await axiosInstance.post(AUTH.login(), credentials);
+export async function login(credentials){
+    return await axiosInstance.post(AUTH.main('login'), credentials);
 };
 
-async function logout(){
-    return await axiosInstance.post(AUTH.logout());
+export async function logout(){
+    return await axiosInstance.post(AUTH.main('logout'));
 };
 
-async function refresh(){
-    return await axiosInstance.post(AUTH.refresh());
+export async function refresh(){
+    return await axiosInstance.post(AUTH.main('refresh'));
 };
 
-
-
-export {
-    login,
-    logout,
-    refresh
-};

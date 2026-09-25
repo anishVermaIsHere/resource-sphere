@@ -1,15 +1,14 @@
 import axiosInstance from "../interceptor";
-import AppConfig from "../../config/app.config";
+import { API_ENDPOINTS } from "./endpoints";
 
 
-async function resourceCreate(spreadsheetId){
+const { RESOURCE } = API_ENDPOINTS
+
+export async function resourceCreate(spreadsheetId){
     try {
-        return await axiosInstance.post(`/api/v1/resources`,{ spreadsheetId });
+        return await axiosInstance.post(RESOURCE.base,{ spreadsheetId });
     } catch (error) {
         console.log('API resource creation error', error);
     }
 };
 
-export {
-    resourceCreate
-}

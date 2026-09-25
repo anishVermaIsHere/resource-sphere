@@ -21,10 +21,10 @@ import { useRouter } from "next/navigation";
 import CommonAvatar from "../ui/common-avatar";
 import { loginSchema } from "../../shared/schema/login";
 import authStore from "../../store/auth.store";
-import { Dots } from "../ui/loading-animation";
+import { Dots, Spinner } from "../ui/loading-animation";
 
 export default function Login() {
-  const { user, setAuth, setUser } = authStore.getState();
+  const { user, setUser } = authStore.getState();
   const router = useRouter();
   const form = useForm({
     resolver: joiResolver(loginSchema),
@@ -36,25 +36,24 @@ export default function Login() {
 
   async function onSubmit(data) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      const res = await login(data);
+      const prom = await new Promise((resolve) => setTimeout(resolve, 2500));
+      const [_, result] = await Promise.allSettled([prom, login(data)]);
+      const res = result?.value;
       if (res?.status === 200) {
-        setAuth({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken });
         setUser(res.data.user);
       }
     } catch (error) {
       console.error("Error while login", error);
-      toast.error(error.response.data.message);
-    } finally {
-
-    }
+      const errMessage = error?.response?.data?.message ?? error.message;
+      toast.error(errMessage);
+    } finally {}
   }
 
-  if (form.formState.isSubmitSuccessful) {
+  if (user?.id) {
     setTimeout(() => router.push(`/u/${user.id}/dashboard`), 3000);
     return (<Section className="flex flex-col justify-center items-center min-h-screen">
       <p className="text-gray-500 font-medium text-lg">Redirecting...</p>
-      <Dots />
+      <Dots onScreenHeight={false} />
     </Section>)
   }
 
@@ -102,7 +101,7 @@ export default function Login() {
               type="submit"
               disabled={!form.formState.isValid || form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
+              {form.formState.isSubmitting ? <> <Spinner size="small" onScreenHeight={false}/> Logging in... </> : 'Login'}
             </Button>
           </form>
           <OAuthGoogle />

@@ -1,6 +1,3 @@
-"use client";
-import { useEffect } from "react";
-
 import { SearchForm } from "./search-form";
 import {
   Sidebar,
@@ -18,11 +15,9 @@ import {
 import CommonAvatar from "./ui/common-avatar";
 import AppConfig from "../config/app.config";
 import authStore from "../store/auth.store";
-import { usePathname } from "next/navigation";
-import { fetchUser } from "../services/api/user";
 import ProfileDropdown from "../components/common/layout/profile-dropdown";
 
-const { user, setUser } = authStore.getState();
+const { user } = authStore.getState();
 
 // This is sample data.
 const data = {
@@ -50,16 +45,6 @@ const data = {
 };
 
 export function AppSidebar({ ...props }) {
-  const pathname = usePathname();
-  const userId = pathname.split("/").slice(2)[0];
-
-  useEffect(() => {
-    (async function () {
-      const user = await fetchUser(userId);
-      setUser(user.data);
-    })();
-  }, []);
-
   return (
     <Sidebar {...props}>
       <SidebarHeader>

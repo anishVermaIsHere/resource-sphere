@@ -1,9 +1,17 @@
-export function Spinner() {
+import { cn } from "../../lib/utils";
+
+export function Spinner({ className, size="large", onScreenHeight=true }) {
+  const spinnerSize = {
+    small: 'size-4',
+    medium: 'size-8',
+    large: 'size-12',
+    extraLarge: 'size-16'
+  }
   return (
-    <div className="flex items-center justify-center min-h-screen" role="status">
+    <div className={cn("flex items-center justify-center", className, onScreenHeight ? "min-h-screen":"")} role="status">
       <svg
         aria-hidden="true"
-        className="size-12 text-white animate-spin dark:text-white fill-primary"
+        className={cn("text-white animate-spin dark:text-white fill-primary", spinnerSize[size])}
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -22,6 +30,8 @@ export function Spinner() {
   );
 }
 
-
-
-export const Dots = () => (<div className="loader"></div>)
+export const Dots = ({ onScreenHeight=true }) => (
+  <div className={cn("flex items-center justify-center", onScreenHeight ? "min-h-screen":"")}>
+    <div className="loader"></div>
+  </div>
+)
