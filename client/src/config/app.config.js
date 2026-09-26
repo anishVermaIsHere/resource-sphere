@@ -2,11 +2,15 @@
 const AppConfig = {
     appName: "Resource Sphere",
     baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
-    oAuth: {
-        clientId: process.env.AUTH_GOOGLE_ID,
-        clientSecret: process.env.AUTH_GOOGLE_SECRET
+    user: {
+        defaultUsername: process.env.NEXT_PUBLIC_DEFAULT_USERNAME,
+        defaultPassword: process.env.NEXT_PUBLIC_DEFAULT_PASSWORD
     },
-    authSecret: process.env.BETTER_AUTH_SECRET
+    oAuth: {
+        clientId: process.env.NEXT_PUBLIC_AUTH_GOOGLE_ID,
+        clientSecret: process.env.NEXT_PUBLIC_AUTH_GOOGLE_SECRET
+    },
+    authSecret: process.env.NEXT_PUBLIC_BETTER_AUTH_SECRET
 };
 
 

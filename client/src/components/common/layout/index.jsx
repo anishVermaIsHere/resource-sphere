@@ -1,5 +1,5 @@
 import React from 'react'
-import AuthLayout from './auth-layout'
+import QueryProvider from "../../../providers/query-provider";
 import { AppSidebar } from '../../app-sidebar'
 import { Resources } from '../../lazy/user'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../../ui/breadcrumb'
@@ -9,8 +9,7 @@ import { Toaster } from 'react-hot-toast'
 
 const AppLayout = ({ children }) => {
   return (
-    <AuthLayout>
-      <>
+      <QueryProvider>
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
@@ -47,8 +46,7 @@ const AppLayout = ({ children }) => {
           </SidebarInset>
         </SidebarProvider>
         <Toaster />
-      </>
-    </AuthLayout>
+      </QueryProvider>
   )
 }
 

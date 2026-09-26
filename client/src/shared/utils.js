@@ -1,5 +1,4 @@
 
-
 export function getAuthStorage(key="_au"){
     if(typeof window !== 'undefined'){
         try {

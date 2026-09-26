@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import AppConfig from "../config/app.config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Resource Manager",
-  description: "Resource Manager",
+  title: AppConfig.appName,
+  description: AppConfig.appName
 };
 
 export default function RootLayout({ children }) {

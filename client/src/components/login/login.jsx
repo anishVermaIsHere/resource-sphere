@@ -23,15 +23,19 @@ import { loginSchema } from "../../shared/schema/login";
 import authStore from "../../store/auth.store";
 import { Dots, Spinner } from "../ui/loading-animation";
 
+
+
+
+
 export default function Login() {
-  const { user, setUser } = authStore.getState();
+  const { user, setUser, setAuth } = authStore(s=>s);
   const router = useRouter();
   const form = useForm({
     resolver: joiResolver(loginSchema),
     defaultValues: {
-      username: "thisisrobin",
-      password: "dcrobin#2025",
-    },
+      username: AppConfig.user.defaultUsername,
+      password: AppConfig.user.defaultPassword
+    }
   });
 
   async function onSubmit(data) {
@@ -41,6 +45,7 @@ export default function Login() {
       const res = result?.value;
       if (res?.status === 200) {
         setUser(res.data.user);
+        setAuth(true);
       }
     } catch (error) {
       console.error("Error while login", error);
@@ -63,7 +68,6 @@ export default function Login() {
         <div className="flex flex-col items-center justify-center space-y-12 sm:shadow-xl sm:rounded-2xl px-6 py-10 w-full sm:w-1/2 lg:w-1/3 xl:w-1/4">
           <div className="flex flex-col items-center mb-5">
             <CommonAvatar />
-            <p className="text-xl">Resource Sphere</p>
             <FormDescription>Login into your account</FormDescription>
           </div>
           <form
@@ -75,9 +79,9 @@ export default function Login() {
               name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email or Username</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="batman" {...field} />
+                    <Input placeholder="charlie" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

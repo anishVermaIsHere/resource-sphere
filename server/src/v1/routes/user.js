@@ -4,7 +4,6 @@ import requireAuth from "../../middleware/auth.js";
 
 const userRouter = Router();
 
-
-authRouter.post('/self', requireAuth, UserController.self);
+userRouter.get('/self', requireAuth, UserController.self);
 
 export default userRouter;

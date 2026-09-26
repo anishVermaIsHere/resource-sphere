@@ -6,6 +6,7 @@ const RESOURCE_BASE = "/resources"
 export const API_ENDPOINTS = {
     USER: {
         base: USER_BASE,
+        me: () => `${USER_BASE}/self`,
         main: (slug) => `${USER_BASE}/${slug}`
     },
     AUTH: {

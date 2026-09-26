@@ -7,12 +7,11 @@ export default async function requireAuth(req, res, next){
     try {
         const token = req.cookies[COOKIES.ACCESS];
         const isVerified = jwtToken.decode(token, TOKEN['ACCESS_TOKEN'], req);
-        if(isVerified){
-            next();
-        } else {
+        if(!isVerified){
             res.status(UNAUTHORIZE).json({message: "Unauthorize user"});
         }
+        return next();
     } catch (error) {
-        res.status(UNAUTHORIZE).json({ message: "Unauthorized" });
+        res.status(UNAUTHORIZE).json({ message: "Unauthorized user" });
     }
 }

@@ -4,26 +4,11 @@ import { persist } from "zustand/middleware";
 const authStore = create(
   persist(
     (set) => ({
-      // accessToken: "",
-      // refreshToken: "",
+      isAuthenticated: false,
       user: null,
       setUser: (user) => set(() => ({ user })),
-      setAuth: (auth) =>
-        set(() => ({
-          accessToken: auth.accessToken,
-          refreshToken: auth.refreshToken,
-        })),
-      setAccessToken: (accessToken) =>
-        set((state) => ({
-          ...state,
-          accessToken,
-        })),
-      setRefreshToken: (refreshToken) =>
-        set((state) => ({
-          ...state,
-          refreshToken,
-        })),
-      clearAuth: () => set(() => ({ accessToken: "", refreshToken: "", user: null })),
+      setAuth: (isAuthenticated) =>set(() => ({ isAuthenticated })),
+      clearAuth: () => set(() => ({ isAuthenticated: false, user: null })),
     //   hasHydrated: false,
     //   setHasHydrated: (value) => set({ hasHydrated: value }),
     }),

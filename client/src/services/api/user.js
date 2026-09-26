@@ -1,9 +1,9 @@
 import axiosInstance from "../interceptor";
 import { API_ENDPOINTS } from "./endpoints";
 
-const { AUTH } = API_ENDPOINTS;
+const { USER } = API_ENDPOINTS;
 
 export async function self(){
-    return await axiosInstance.post(AUTH.me('self'));
+    return await axiosInstance.get(USER.me());
 }
 

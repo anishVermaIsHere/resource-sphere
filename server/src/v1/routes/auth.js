@@ -6,6 +6,5 @@ const authRouter = Router();
 
 authRouter.post('/login', AuthController.find);
 authRouter.post('/logout', requireAuth, AuthController.logout);
-authRouter.post('/self', requireAuth, AuthController.self);
 
 export default authRouter;

@@ -1,34 +1,28 @@
-
-"use client"
-// import { getAuthStorage } from "../../../shared/utils";
-import { useQuery } from "@tanstack/react-query";
-import QueryProvider from "../../../providers/query-provider"
-import { Dots } from "../../ui/loading-animation";
-import { self } from "../../../services/api/user";
+import { redirect } from "next/navigation";
+import ROUTES from "../../../shared/routes";
+import { getSelf } from "../../../actions/auth";
 
 
-function AuthChild({ children }){
-      const { data: user, isLoading, isError } = useQuery({
-        queryKey: ["self"],
-        queryFn: async () => {
-            console.log('call self')
-            const response = await self();
-            console.log('response', response);
-            if (!response.statusText) {
-                throw new Error("Unauthenticated");
-            }
 
-            return response
-        },
-        retry: false,
-    });
 
-    if (isLoading) {
-        return <Dots />;
+
+const { HOME, LOGIN, DASHBOARD } = ROUTES;
+
+
+
+export default async function AuthLayout({ children }) {
+    console.log('line 1');
+    const response = await getSelf();
+    console.log('line 2')
+    console.log("RESPONSE", response);
+
+
+    if (!response.ok) {
+        // redirect(DASHBOARD(response?.data?.user?.id));
+        console.log('call redirect')
+        redirect(HOME);
+        return
     }
-    return <>{children}</>
-}
 
-export default function AuthLayout({ children }) {
-    return <QueryProvider><AuthChild>{children}</AuthChild></QueryProvider>
+    return <>{children}</>
 }
