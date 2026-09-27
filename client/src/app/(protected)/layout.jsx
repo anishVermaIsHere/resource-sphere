@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import ROUTES from "../../shared/routes";
 import { getSelf } from "../../actions/auth";
-
+import ClientAuthLayout from "../../components/common/layout/client-auth-layout";
 
 
 
@@ -17,9 +17,11 @@ export default async function AuthLayout({ children }) {
     }
 
     const response = await getSelf(); 
+    const user = response?.user;
+
     if (!response.success) {
         redirect(HOME); 
     }
 
-    return <>{children}</>
+    return <ClientAuthLayout user={user}>{children}</ClientAuthLayout>;
 }

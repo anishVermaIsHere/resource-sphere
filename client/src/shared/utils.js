@@ -1,3 +1,4 @@
+import authStore from "../store/auth.store";
 
 export function getAuthStorage(key="_au"){
     if(typeof window !== 'undefined'){

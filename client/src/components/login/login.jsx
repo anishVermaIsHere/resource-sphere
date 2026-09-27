@@ -1,4 +1,5 @@
 "use client";
+import { useState } from "react";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
 import { OAuthGoogle } from "./oauth";
@@ -22,13 +23,25 @@ import CommonAvatar from "../ui/common-avatar";
 import { loginSchema } from "../../shared/schema/login";
 import authStore from "../../store/auth.store";
 import { Dots, Spinner } from "../ui/loading-animation";
+import APP_ROUTES from "../../shared/routes";
 
 
 
+const { DASHBOARD } = APP_ROUTES
 
+
+function RedirectLoader(){
+  return (
+    <Section className="flex flex-col justify-center items-center min-h-screen">
+      <p className="text-gray-500 font-medium text-lg">Redirecting...</p>
+      <Dots onScreenHeight={false} />
+    </Section>
+  )
+}
 
 export default function Login() {
-  const { user, setUser, setAuth } = authStore(s=>s);
+  const [redirecting, setRedirecting] = useState(false);
+  const { setUser, setAuth } = authStore(s=>s);
   const router = useRouter();
   const form = useForm({
     resolver: joiResolver(loginSchema),
@@ -44,8 +57,11 @@ export default function Login() {
       const [_, result] = await Promise.allSettled([prom, login(data)]);
       const res = result?.value;
       if (res?.status === 200) {
-        setUser(res.data.user);
+        setRedirecting(true);
+        const user = res.data.user;
+        setUser(user);
         setAuth(true);
+        setTimeout(() => router.push(DASHBOARD(user?.id)), 3000);
       }
     } catch (error) {
       console.error("Error while login", error);
@@ -54,12 +70,8 @@ export default function Login() {
     } finally {}
   }
 
-  if (user?.id) {
-    setTimeout(() => router.push(`/u/${user.id}/dashboard`), 3000);
-    return (<Section className="flex flex-col justify-center items-center min-h-screen">
-      <p className="text-gray-500 font-medium text-lg">Redirecting...</p>
-      <Dots onScreenHeight={false} />
-    </Section>)
+  if(redirecting){
+    return <RedirectLoader />
   }
 
   return (
