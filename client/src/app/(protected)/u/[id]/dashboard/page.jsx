@@ -1,5 +1,6 @@
 import AppLayout from "../../../../../components/common/layout"
 import AppConfig from "../../../../../config/app.config";
+import Dashboard from "../../../../../features/user/components/dashboard";
 
 export const metadata = {
   title: `Dashboard | ${AppConfig.appName}`,
@@ -10,7 +11,7 @@ export const metadata = {
 export default async function DashboardPage() {
   return (
       <AppLayout>
-        Dashboard Page
+        <Dashboard />
       </AppLayout>
   )
 }

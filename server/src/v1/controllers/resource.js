@@ -1,8 +1,11 @@
 import { getGoogleSheet } from "../../../../client/src/lib/utils.js";
 import UserModel from "../../database/models/user.model.js";
+import SheetModel from "../../database/models/resource.model.js";
 import encrypt from "../../utils/encrypt.js";
-import { getSheetData } from "../../utils/google.js";
+import { getSpreadSheet } from "../../utils/google.js";
 import tokenObject from "../../utils/token.js";
+
+
 
 const ResourceController = {
   /**
@@ -53,11 +56,38 @@ const ResourceController = {
    */
   async create(req, res){
     try {
-        const { spreadsheetId } = req.body;
-      const res = await getSheetData(spreadsheetId);
-      console.log('res', res);
+        const { spreadSheetId, sheetTitle } = req.body;
+        const sheet = await getSpreadSheet(spreadSheetId, sheetTitle);
+        if(sheet?.data){
+          const { values, majorDimension, range } = sheet.data;
+          const document = {
+            user: req["decoded"]?.id,
+            sheetId: spreadSheetId,
+            title: sheetTitle,
+            majorDimension,
+            values,
+            range
+          }
+
+          const doc = await SheetModel.create(document);
+          return res.json(doc);
+        }
+        return doc;
     } catch (error) {
         console.log('error', error);
+    }
+  },
+  /**
+   * @route GET /
+   * @desc Fetch google sheets data,
+   * @access Private
+   */
+  async get(req, res){
+    try {
+      const docs = await SheetModel.find();
+      return res.json(docs);
+    } catch (error) {
+      console.log('error', error);
     }
   }
 };

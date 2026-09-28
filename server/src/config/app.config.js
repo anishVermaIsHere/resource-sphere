@@ -19,7 +19,8 @@ const {
     CLOUDINARY_CLOUD_NAME,
     MAIL_SENDER_NAME,
     MAIL_SENDER_EMAIL,
-    MAIL_PASSWORD
+    MAIL_PASSWORD,
+    GOOGLE_SHEET_KEY
 
 } = process.env;
 
@@ -44,6 +45,9 @@ const AppConfig={
         senderName: MAIL_SENDER_NAME,
         senderMail: MAIL_SENDER_EMAIL,
         password: MAIL_PASSWORD
+    },
+    google: {
+        serviceKey: GOOGLE_SHEET_KEY 
     }
 
 };

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const userSchema = new Schema(
   {
-    uid: { type: String, unique: true, default: uuidv4() },
+    uid: { type: String, unique: true, default: uuidv4 },
     firstName: { type: String, required: [true, "Please provide first name"] },
     lastName: { type: String, required: [true, "Please provide last name"] },
     fullName: { type: String },

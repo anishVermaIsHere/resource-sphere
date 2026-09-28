@@ -10,7 +10,7 @@ const { DASHBOARD } = ROUTES;
 
 export default async function PublicLayout({ children }) {
     const cookieStore = await cookies();
-    const accessToken = cookieStore.get('_rs-ac')?.value;
+    const accessToken = cookieStore.get('rs_ac')?.value;
 
     if (accessToken) {
         const response = await getSelf();

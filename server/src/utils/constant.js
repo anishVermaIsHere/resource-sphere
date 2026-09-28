@@ -12,6 +12,6 @@ export const HTTP_CODES = {
 };
 
 export const COOKIES = {
-  ACCESS: "_rs-ac",
-  REFRESH: "_rs-re"
+  ACCESS: "rs_ac",
+  REFRESH: "rs_re"
 }

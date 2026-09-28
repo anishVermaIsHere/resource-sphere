@@ -3,6 +3,7 @@ import Joi from "joi";
 export const resourceFormSchema = Joi.object({
   type: Joi.string(),
   sheet: Joi.any(),
-  sheetLink: Joi.string().uri().optional()
+  sheetLink: Joi.string().uri().optional(),
+  sheetTitle: Joi.string().optional()
 });
 

@@ -1,5 +1,6 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { useQueryClient } from '@tanstack/react-query'
 import { Button } from "../../../components/ui/button";
 import {
   Dialog,
@@ -19,17 +20,20 @@ import { Controller, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { resourceFormSchema } from "../../../shared/schema/resource";
 import { getGoogleSheet } from "../../../lib/utils";
-import { resourceCreate } from "../../../services/api/resource";
+import { createSheet } from "../../../services/api/resource";
 
 export function FormModal({ children }) {
   const uploadRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
   const { register, handleSubmit, formState, watch, getValues, control } =
     useForm({
       resolver: joiResolver(resourceFormSchema),
       defaultValues: {
-        type: "file",
+        type: "text",
         sheet: null,
         sheetLink: "",
+        sheetTitle: "Sheet1"
       },
     });
 
@@ -38,7 +42,9 @@ export function FormModal({ children }) {
 
   const onSubmit = async (data) => {
     const { spreadSheetId } = getGoogleSheet(data.sheetLink);
-    await resourceCreate(spreadSheetId);
+    await createSheet({ spreadSheetId, sheetTitle: data.sheetTitle });
+    queryClient.invalidateQueries({ queryKey: ['resources'] });
+    setIsOpen(false);
   };
 
   const handleUpload = (e) => {
@@ -46,9 +52,8 @@ export function FormModal({ children }) {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        {/* <Button variant="outline">Open Dialog</Button> */}
+    <Dialog open={isOpen}>
+      <DialogTrigger asChild onClick={()=>setIsOpen(!isOpen)}>
         {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-2xl space-y-2">
@@ -108,6 +113,11 @@ export function FormModal({ children }) {
                 <Input
                   id="sheet-link"
                   {...register("sheetLink")}
+                />
+                <Label htmlFor="sheet-title">Sheet Title</Label>
+                <Input
+                  id="sheet-title"
+                  {...register("sheetTitle")}
                 />
               </div>
             )}
