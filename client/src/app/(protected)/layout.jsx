@@ -10,7 +10,7 @@ const { HOME } = ROUTES;
 
 export default async function AuthLayout({ children }) {
     const cookieStore = await cookies();
-    const accessToken = cookieStore.get('rs_ac')?.value;
+    const accessToken = cookieStore.get('resource_sphere:auth:ac')?.value;
 
     if (!accessToken) {
         redirect(HOME);

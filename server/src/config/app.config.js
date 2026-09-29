@@ -8,6 +8,7 @@ const {
     CORS_ORIGIN_2,
     DB_URI,
     APP_NAME,
+    APP_PREFIX,
     SALT,
     ACCESS_TOKEN_SEC_KEY,
     REFRESH_TOKEN_SEC_KEY,
@@ -21,7 +22,6 @@ const {
     MAIL_SENDER_EMAIL,
     MAIL_PASSWORD,
     GOOGLE_SHEET_KEY
-
 } = process.env;
 
 const AppConfig={
@@ -30,6 +30,7 @@ const AppConfig={
     corsOrigin: [CORS_ORIGIN_1, CORS_ORIGIN_2],
     dbUri: DB_URI,
     appName: APP_NAME,
+    appPrefix: APP_PREFIX,
     salt: SALT,
     accessTokenKey: ACCESS_TOKEN_SEC_KEY,
     refreshTokenKey: REFRESH_TOKEN_SEC_KEY,

@@ -1,3 +1,5 @@
+import AppConfig from "../config/app.config.js";
+
 export const HTTP_CODES = {
   SUCCESS: 200,
   CREATE: 201,
@@ -12,6 +14,6 @@ export const HTTP_CODES = {
 };
 
 export const COOKIES = {
-  ACCESS: "rs_ac",
-  REFRESH: "rs_re"
+  ACCESS: `${AppConfig.appPrefix}:auth:ac`,
+  REFRESH: `${AppConfig.appPrefix}:auth:re`
 }
