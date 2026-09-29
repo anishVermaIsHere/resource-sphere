@@ -14,6 +14,6 @@ export const HTTP_CODES = {
 };
 
 export const COOKIES = {
-  ACCESS: `${AppConfig.appPrefix}:auth:ac`,
-  REFRESH: `${AppConfig.appPrefix}:auth:re`
+  ACCESS: `${AppConfig.appPrefix}_auth_ac`,
+  REFRESH: `${AppConfig.appPrefix}_auth_re`
 }

@@ -10,7 +10,7 @@ const { DASHBOARD } = ROUTES;
 
 export default async function PublicLayout({ children }) {
     const cookieStore = await cookies();
-    const accessToken = cookieStore.get('resource_sphere:auth:ac')?.value;
+    const accessToken = cookieStore.get('resource_sphere_auth_ac')?.value;
 
     if (accessToken) {
         const response = await getSelf();

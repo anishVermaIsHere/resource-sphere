@@ -1,8 +1,10 @@
 import UserModel from "../../database/models/user.model.js";
 import encrypt from "../../utils/encrypt.js";
-import jwtToken, { TOKEN } from "../../utils/token.js";
+import jwtToken from "../../utils/token.js";
 import { COOKIES } from "../../utils/constant.js";
+import { HTTP_CODES } from "../../utils/constant.js";
 
+const { RESOURCE_NOT_FOUND, UNAUTHORIZE } = HTTP_CODES;
 
 const AuthController = {
   /**
@@ -17,6 +19,7 @@ const AuthController = {
       const user = await UserModel.findOne({
         $or: [{ userName: username }, { email: username }],
       });
+
       if (user) {
         if (encrypt.comparePassword(password, user.password)) {
           const { accessToken, refreshToken } = encode({
@@ -41,6 +44,7 @@ const AuthController = {
               sameSite: 'lax',
               path: '/'    
           });
+
           
           return res.json({ 
             user: {
@@ -57,8 +61,10 @@ const AuthController = {
           })
         }
       }
-      return res.status(404).json({ message: "User not exist" });
-    } catch (error) {}
+      return res.status(RESOURCE_NOT_FOUND).json({ message: "User not exist" });
+    } catch (error) {
+      console.log('error', error)
+    }
   },
   /**
    * @route POST /auth/logout
@@ -79,7 +85,7 @@ const AuthController = {
           res.clearCookie(COOKIES.REFRESH, cookieOptions);
           return res.json({ success: true, message: "Logged out successfully" });
         }
-        return res.status(401).json({ error: 'Unauthorized: No token provided' });
+        return res.status(UNAUTHORIZE).json({ error: 'Unauthorized: No token provided' });
     } catch (error) {
       throw error
     }
