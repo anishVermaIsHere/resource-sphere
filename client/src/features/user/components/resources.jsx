@@ -4,6 +4,7 @@ import { getSheet } from "../../../services/api/resource";
 import Section from "../../../components/common/layout/section";
 import { Button } from "../../../components/ui/button";
 import { FormModal } from "../../resource/components/resource-form";
+import { FileUploadForm } from "../../resource/components/file-upload-form";
 import ResourceCard from "../../resource/components/resource-card";
 import { Dots } from "../../../components/ui/loading-animation";
 import AlertBox from "../../../shared/widgets/alertbox";
@@ -25,10 +26,13 @@ const Resources = () => {
 
   return (
     <div>
-      <div>
+      <div className="flex gap-3">
         <FormModal>
-          <Button>Add data</Button>
+          <Button>Add Spreadsheet</Button>
         </FormModal>
+        <FileUploadForm>
+            <Button>Remove Metadata</Button>
+        </FileUploadForm>
       </div>
       <Section>
         <h2>Resources</h2>

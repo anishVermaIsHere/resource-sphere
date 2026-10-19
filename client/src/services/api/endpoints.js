@@ -14,7 +14,8 @@ export const API_ENDPOINTS = {
         main: (slug) => `${AUTH_BASE}/${slug}`,
     },
     RESOURCE: {
-        base: RESOURCE_BASE
+        base: RESOURCE_BASE,
+        main: (slug) => `${RESOURCE_BASE}/${slug}`,
     }
 }
 

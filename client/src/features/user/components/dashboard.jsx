@@ -1,8 +1,7 @@
 
-
 const Dashboard = () => {
   return (
-    <>Dashboard Insights</>
+    <>Coming Soon</>
   )
 }
 

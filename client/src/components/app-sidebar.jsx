@@ -1,3 +1,4 @@
+"use client"
 import { SearchForm } from "./search-form";
 import {
   Sidebar,
@@ -17,34 +18,34 @@ import AppConfig from "../config/app.config";
 import authStore from "../store/auth.store";
 import ProfileDropdown from "../components/common/layout/profile-dropdown";
 
-const { user } = authStore.getState();
-
-// This is sample data.
-const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
-  navMain: [
-    {
-      title: "Getting Started",
-      url: "/",
-      items: [
-        {
-          title: "Dashboard",
-          url: `/u/${user?.id}/dashboard`,
-        },
-        {
-          title: "Resource List",
-          url: `/u/${user?.id}/resources`,
-        },
-        {
-          title: "Notes",
-          url: `/u/${user?.id}/notes`,
-        },
-      ],
-    },
-  ],
-};
 
 export function AppSidebar({ ...props }) {
+  const { user } = authStore(s=>s);
+
+  const data = {
+    versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+    navMain: [
+      {
+        title: "Getting Started",
+        url: "/",
+        items: [
+          {
+            title: "Dashboard",
+            url: `/u/${user?.id}/dashboard`,
+          },
+          {
+            title: "Resource List",
+            url: `/u/${user?.id}/resources`,
+          },
+          {
+            title: "Notes",
+            url: `/u/${user?.id}/notes`,
+          },
+        ],
+      },
+    ],
+  };
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>

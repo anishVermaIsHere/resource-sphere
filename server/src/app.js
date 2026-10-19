@@ -18,7 +18,8 @@ app.use(
   cors({
     origin: AppConfig.corsOrigin,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    credentials: true, // access-control-allow-credentials:true
+    credentials: true, // access-control-allow-credentials:true,
+    exposedHeaders: ["X-File-Name"],
   })
 );
 

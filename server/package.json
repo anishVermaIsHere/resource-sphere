@@ -20,11 +20,13 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
+    "exiftool-vendored": "^39.0.1",
     "express": "^5.1.0",
     "google-auth-library": "^10.3.0",
     "googleapis": "^154.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.4",
+    "multer": "^2.4.0",
     "nodemon": "^3.1.10",
     "uuid": "^11.1.0"
   }

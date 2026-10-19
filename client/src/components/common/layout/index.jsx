@@ -1,7 +1,6 @@
 import React from 'react'
 import QueryProvider from "../../../providers/query-provider";
 import { AppSidebar } from '../../app-sidebar'
-import { Resources } from '../../lazy/user'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '../../ui/breadcrumb'
 import { Separator } from '../../ui/separator'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '../../ui/sidebar'
@@ -34,7 +33,6 @@ const AppLayout = ({ children }) => {
               </Breadcrumb>
             </header>
             <div className="flex flex-1 flex-col gap-4 p-4">
-              <Resources />
               {children}
               <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                 {/* <div className="bg-muted/50 aspect-video rounded-xl" /> */}

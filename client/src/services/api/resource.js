@@ -19,3 +19,12 @@ export async function getSheet(payload){
         console.log('API: resource fetching error', error);
     }
 };
+
+
+export async function uploadFile(payload, options){
+    try {
+        return await axiosInstance.post(RESOURCE.main('upload'), payload, options);
+    } catch (error) {
+        console.log('API: resource uploading error', error);
+    }
+}

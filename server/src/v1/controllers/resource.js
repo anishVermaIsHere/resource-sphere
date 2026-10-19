@@ -1,10 +1,14 @@
-import { getGoogleSheet } from "../../../../client/src/lib/utils.js";
+import * as fs from "node:fs";
 import UserModel from "../../database/models/user.model.js";
 import SheetModel from "../../database/models/resource.model.js";
 import encrypt from "../../utils/encrypt.js";
 import { getSpreadSheet } from "../../utils/google.js";
 import tokenObject from "../../utils/token.js";
+import handleFileMetadata from "../../utils/file-meta.js";
+import { HTTP_CODES } from "../../utils/constant.js";
 
+
+const { RESOURCE_NOT_FOUND, UNAUTHORIZE, SUCCESS } = HTTP_CODES;
 
 
 const ResourceController = {
@@ -87,6 +91,36 @@ const ResourceController = {
       const docs = await SheetModel.find();
       return res.json(docs);
     } catch (error) {
+      console.log('error', error);
+    }
+  },
+  async uploadFile(req, res){
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          message: "No file uploaded",
+        });
+      }
+      const filePath = req.file.path;
+      await handleFileMetadata(filePath);
+
+      res.setHeader(
+        "X-File-Name",
+        encodeURIComponent(req.file.filename)
+      );
+      
+      res.download(filePath, req.file.originalname, async (error) => {
+        try {
+          await fs.promises.unlink(filePath);
+        } catch (err) {
+          console.error("Failed to delete temporary file:", err);
+        }
+        if (error) {
+          console.error("Download error:", error);
+        }
+      });
+      // return res.status(SUCCESS).json({ message: "File uploaded" });
+    } catch(error) {
       console.log('error', error);
     }
   }

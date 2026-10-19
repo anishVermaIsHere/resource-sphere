@@ -52,7 +52,7 @@ export function FormModal({ children }) {
   };
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild onClick={()=>setIsOpen(!isOpen)}>
         {children}
       </DialogTrigger>
@@ -123,7 +123,7 @@ export function FormModal({ children }) {
             )}
           </div>
           <DialogFooter className="mt-4">
-            <DialogClose asChild>
+            <DialogClose asChild >
               <Button variant="outline">Cancel</Button>
             </DialogClose>
             <Button type="submit">Submit</Button>
