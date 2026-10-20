@@ -103,11 +103,7 @@ const ResourceController = {
       }
       const filePath = req.file.path;
       await handleFileMetadata(filePath);
-
-      res.setHeader(
-        "X-File-Name",
-        encodeURIComponent(req.file.filename)
-      );
+      res.setHeader("X-File-Name", encodeURIComponent(req.file.filename));
       
       res.download(filePath, req.file.originalname, async (error) => {
         try {
