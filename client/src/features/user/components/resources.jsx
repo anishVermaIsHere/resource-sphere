@@ -8,6 +8,7 @@ import { FileUploadForm } from "../../resource/components/file-upload-form";
 import ResourceCard from "../../resource/components/resource-card";
 import { Dots } from "../../../components/ui/loading-animation";
 import AlertBox from "../../../shared/widgets/alertbox";
+import { Separator } from "../../../components/ui/separator";
 
 
 
@@ -34,8 +35,9 @@ const Resources = () => {
             <Button>Remove Metadata</Button>
         </FileUploadForm>
       </div>
+      <Separator className="my-4"/>
       <Section>
-        <h2>Resources</h2>
+        <h2 className="text-xl">Resources</h2>
         <div className="my-5">
           {sheets.map((doc,ind)=>(
             <ResourceCard key={ind} doc={doc}/>

@@ -40,7 +40,7 @@ export default function FileProgress({
 
           <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full rounded-full transition-[width] duration-200 bg-gray-600"
+              className="h-full rounded-full transition-[width] duration-200 bg-primary"
               style={{ width: `${progress}%` }}
             />
           </div>

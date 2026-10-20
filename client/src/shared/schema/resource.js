@@ -2,8 +2,8 @@ import Joi from "joi";
 
 export const resourceFormSchema = Joi.object({
   type: Joi.string(),
-  sheet: Joi.any(),
-  sheetLink: Joi.string().uri().optional(),
-  sheetTitle: Joi.string().optional()
+  file: Joi.any().optional().allow(null, ""),
+  sheetLink: Joi.string().uri().optional().allow(""),
+  sheetTitle: Joi.string().optional().allow("")
 });
 

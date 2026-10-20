@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useState } from "react";
-import { useQueryClient } from '@tanstack/react-query'
 import { Button } from "../../../components/ui/button";
 import {
   Dialog,
@@ -15,7 +14,7 @@ import {
 import Icons from "../../../components/ui/icons";
 import { Input } from "../../../components/ui/input";
 import FileProgress from "../components/file-progress";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { resourceFormSchema } from "../../../shared/schema/resource";
 import { uploadFile } from "../../../services/api/resource";
@@ -27,19 +26,17 @@ import toast from "react-hot-toast";
 export function FileUploadForm({ children }) {
   const uploadRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploading, setUploading] = useState(false);
-  const queryClient = useQueryClient();
-  const { register, handleSubmit, formState, watch, getValues, setValue, control } =
-    useForm({
-      // resolver: joiResolver(resourceFormSchema),
-      // defaultValues: {
-      //   type: "file"
-      // },
-    });
+  const { register, handleSubmit, formState, watch, getValues, setValue, control } = useForm({});
+  const filewatched = useWatch({
+    control, // pass control from useForm()
+    name: "file",
+  });
 
   const { ref: inputRef, ...inputProps } = register("file");
-  const selectedFile = watch("file")?.[0];
+  const selectedFile = filewatched instanceof FileList ? filewatched[0] : filewatched;
 
   const onSubmit = async (data) => {
     try {
@@ -65,7 +62,7 @@ export function FileUploadForm({ children }) {
           },
       });
 
-      const fileName = decodeURIComponent(res.headers["x-file-name"]);
+      const fileName = decodeURIComponent(res?.headers["x-file-name"]);
       const url = window.URL.createObjectURL(res.data);
 
       const a = document.createElement("a");
@@ -75,10 +72,38 @@ export function FileUploadForm({ children }) {
       a.click();
       a.remove();
       window.URL.revokeObjectURL(url);
+      toast.success("File metadata removed");
     } catch(err){
-      toast.error(err?.response?.data?.message || "File Upload failed");
+      toast.error("File Upload failed");
     } finally {
       handleCloseModal();
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+
+    const files = e.dataTransfer.files;
+    
+    if (files && files.length > 0) {
+      setValue('file', files, { shouldValidate: true, shouldDirty: true });
+      if (uploadRef.current) {
+        uploadRef.current.files = files;
+      }
     }
   };
 
@@ -117,13 +142,20 @@ export function FileUploadForm({ children }) {
               :
               <div
                 onClick={handleUpload}
-                className="flex flex-col justify-center items-center gap-y-2 text-gray-400 border-4 border-dashed border-gray-400 rounded-lg h-[300px] cursor-pointer"
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={`flex flex-col justify-center items-center gap-y-2 border-4 border-dashed rounded-lg h-[300px] cursor-pointer transition-colors ${
+                  isDragging 
+                    ? "border-primary bg-primary/5 text-primary" 
+                    : "border-gray-400 text-gray-400 hover:border-gray-500"
+                }`}
               >
                 <Icons.upload className="size-14" />
 
                 <p className="text-gray-500 text-sm text-center">
                   Drag and Drop <br />
-                  accepts .png, .jpeg, .docx, .pdf files
+                  accepts .png, .jpeg, .docx, .xlsx, .pdf files
                 </p>
 
                 <Input
@@ -134,7 +166,7 @@ export function FileUploadForm({ children }) {
                     inputRef(e);
                     uploadRef.current = e;
                   }}
-                  accept=".png,.jpeg,.pdf,.docx,.csv,.xlsx"
+                  accept=".png,.jpeg,.pdf,.docx,.xlsx"
                 />
               </div>}
           </div>

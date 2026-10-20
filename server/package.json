@@ -15,6 +15,7 @@
     "dev": "node --watch src/index.js"
   },
   "dependencies": {
+    "adm-zip": "^0.6.1",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cookie-parser": "^1.4.7",

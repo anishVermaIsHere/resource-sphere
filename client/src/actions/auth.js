@@ -21,7 +21,7 @@ export async function getSelf() {
         return await res.json();
     } catch (error) {
         console.log("ERROR", error);
-        throw err;
+        throw error;
     }
 
 }
